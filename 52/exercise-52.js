@@ -4,14 +4,14 @@ const person = {
   lastName: 'Rossi',
   age: 25,
 };
-person.toJSON = function () {
-  let {
-    firstName,
-    lastName,
-    ...other
-  } = this;
-  return other;
+
+function replacer(key, value) {
+  if (typeof value === 'string') {
+    return undefined;
+  }
+  return value;
 }
-const json = JSON.stringify(person);
+
+const json = JSON.stringify(person, replacer);
 
 console.log(json); // Should return: { id: 1, age: 25 }
