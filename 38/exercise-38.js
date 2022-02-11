@@ -23,10 +23,12 @@ class BankAccountVip extends BankAccount {
   }
   deposit(amount) {
     if (this.amount >= 1000) {
-      this.amount += amount + ((amount * 3) / 100);
-    } else {
-      this.amount += amount;
+      this.percentage(amount);
     }
+    super.deposit(amount);
+  }
+  percentage(amount) {
+    this.amount += (amount * 3) / 100;
   }
 }
 const bankAccountVip = new BankAccountVip(1000);

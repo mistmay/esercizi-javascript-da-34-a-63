@@ -20,11 +20,13 @@ class Circle {
 class AreaCalculator {
   static calculate(figure) {
     if (figure instanceof Square) {
-      return figure.side * figure.side;
-    } else if (figure instanceof Rectangle) {
+      return Math.pow(figure.side, 2);
+    }
+    if (figure instanceof Rectangle) {
       return figure.width * figure.height;
-    } else if (figure instanceof Circle) {
-      return figure.radius * figure.radius * 3.14;
+    }
+    if (figure instanceof Circle) {
+      return Math.pow(figure.radius, 2) * 3.14;
     }
   }
 }
