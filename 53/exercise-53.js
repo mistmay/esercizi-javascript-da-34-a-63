@@ -1,9 +1,5 @@
 function sum(...num) {
-    let result = 0;
-    for (let i = 0; i < num.length; i++) {
-        result += num[i];
-    }
-    return result;
+    return num.reduce((sumNum, current) => sumNum + current, 0);
 }
 
 console.log(sum(1, 2, 3, 4, 5));

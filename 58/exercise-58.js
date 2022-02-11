@@ -19,15 +19,16 @@ const persons = [{
 ];
 
 function fetchPersonById(id) {
+  const person = persons.find(item => item.id === id);
   return new Promise((resolve, reject) => {
     setTimeout(() => {
-      if (persons.find(item => item.id === id)) {
-        resolve(persons.find(item => item.id === id))
+      if (person) {
+        resolve(person);
       } else {
-        reject(new Error("Wrong id"));
+        reject(new Error("Err: Wrong id"));
       }
-    }, 1000);
+    }, 2000);
   });
 }
 
-fetchPersonById(2).then((person) => console.log(person)).catch((err) => console.log("Error: Wrong ID"));
+fetchPersonById(2).then((person) => console.log(person)).catch((err) => console.log(err.message));
