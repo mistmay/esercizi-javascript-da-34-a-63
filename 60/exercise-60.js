@@ -31,39 +31,38 @@ const jobs = [{
     jobTitle: 'Developer'
   }
 ];
-const promise1 = function fetchPersonById(id) {
-  return new Promise((resolve, reject) => {
+
+const fetchbyId = (id, collection, reject, timeOut) => {
+  return new Promise((resolve) => {
     setTimeout(() => {
-      const person = persons.find(item => item.id === id);
-      if (person) {
-        resolve(person)
-      } else {
-        reject(new Error("Wrong id"));
+      const item = collection.find(item => item.id === id);
+      if (item) {
+        return resolve(item);
       }
-    }, 2000);
-  });
+      return reject();
+    })
+  }, timeOut);
+}
+const fetchPersonById = (id, persons) => {
+  const timeOut = 1000;
+  const reject = () => {
+    return Promise.reject("There is not person with this id");
+  };
+  return fetchbyId(id, persons, reject, timeOut);
 };
-const promise2 = function fetchJobById(id) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const job = jobs.find(item => item.id === id);
-      if (job) {
-        resolve(job)
-      } else {
-        reject(new Error("Wrong id"));
-      }
-    }, 1000);
-  });
+const fetchJobById = (id, jobs) => {
+  const timeOut = 500;
+  const reject = () => {
+    return Promise.reject("There is not jot with this id");
+  };
+  return fetchbyId(id, jobs, reject, timeOut);
 };
-let id = 2;
-Promise.all([promise1(id), promise2(id)]).then((values) => {
-    let [a, b] = values;
-    let obj = {
+Promise.all([fetchPersonById(2, persons), fetchJobById(2, jobs)])
+  .then(value => {
+    const [a, b] = value;
+    console.log({
       ...a,
       ...b
-    };
-    console.log(obj);
+    });
   })
-  .catch((err) => {
-    console.log(err.message);
-  });
+  .catch(error => console.log(error))

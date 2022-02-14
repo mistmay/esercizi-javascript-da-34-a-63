@@ -32,34 +32,31 @@ const jobs = [{
   }
 ];
 
-const promise1 = function fetchPersonById(id) {
-  return new Promise((resolve, reject) => {
+const fetchbyId = (id, collection, reject, timeOut) => {
+  return new Promise((resolve) => {
     setTimeout(() => {
-      const person = persons.find(item => item.id === id);
-      if (person) {
-        resolve(person)
-      } else {
-        reject(new Error("Wrong id"));
+      const item = collection.find(item => item.id === id);
+      if (item) {
+        return resolve(item);
       }
-    }, 1000);
-  });
+      return reject();
+    })
+  }, timeOut);
+}
+const fetchPersonById = (id, persons) => {
+  const timeOut = 1000;
+  const reject = () => {
+    return Promise.reject("There is not person with this id");
+  };
+  return fetchbyId(id, persons, reject, timeOut);
 };
-const promise2 = function fetchJobById(id) {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      const job = jobs.find(item => item.id === id);
-      if (job) {
-        resolve(job.jobTitle)
-      } else {
-        reject(new Error("Wrong id"));
-      }
-    }, 500);
-  });
+const fetchJobById = (id, jobs) => {
+  const timeOut = 500;
+  const reject = () => {
+    return Promise.reject("There is not jot with this id");
+  };
+  return fetchbyId(id, jobs, reject, timeOut);
 };
-let id = 2;
-Promise.race([promise1(id), promise2(id)]).then((value) => {
-    console.log(value);
-  })
-  .catch((err) => {
-    console.log(err.message);
-  });
+Promise.race([fetchPersonById(2, persons), fetchJobById(2, jobs)])
+  .then(value => console.log(value))
+  .catch(error => console.log(error))
